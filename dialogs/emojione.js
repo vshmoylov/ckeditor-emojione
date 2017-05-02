@@ -3,9 +3,10 @@ CKEDITOR.dialog.add( 'emojioneDialog', function( editor ) {
 	var dialog;
 	var onClick = function( evt ) {
 		var target = evt.data.getTarget();
-		var unicode = target.getAttribute('data-unicode');
+		var unicode = target.getParent().getAttribute('data-unicode');
 		if (unicode) {
-			editor.insertText(emojione.convert(target.getAttribute('data-unicode')));
+			editor.insertText(emojione.convert(unicode));
+			//editor.insertHtml(emojione.toImage(emojione.convert(unicode)));
 			dialog.hide();
 		}
 		evt.data.preventDefault();
@@ -86,7 +87,7 @@ CKEDITOR.dialog.add( 'emojioneDialog', function( editor ) {
 	var buildHtml = function(group) {
 		var labelId = CKEDITOR.tools.getNextId() + '_smiley_emtions_label';
 		var html = [
-			'<div>' +
+			'<div style="height:400px;overflow-y:scroll;">' +
 			'<span id="' + labelId + '" class="cke_voice_label">Test</span>',
 			'<table role="listbox" aria-labelledby="' + labelId + '" style="width:100%;height:100%;border-collapse:separate;" cellspacing="2" cellpadding="2"',
 			CKEDITOR.env.ie && CKEDITOR.env.quirks ? ' style="position:absolute;"' : '',
@@ -95,9 +96,9 @@ CKEDITOR.dialog.add( 'emojioneDialog', function( editor ) {
 
 		var list = {};
 		var i = 0;
-		emojione.imageType = 'svg'; // or svg
-		emojione.sprites = true;
-		emojione.imagePathSVGSprites = '/vendor/emojione/assets/sprites/emojione.sprites.svg';
+		//emojione.imageType = 'svg'; // or svg
+		//emojione.sprites = true;
+		//emojione.imagePathSVGSprites = '/vendor/emojione/assets/sprites/emojione.sprites.svg';
 
 		for (var shortcode in emojione.emojioneList) {
 
@@ -128,7 +129,8 @@ CKEDITOR.dialog.add( 'emojioneDialog', function( editor ) {
 				'<td class="cke_centered" style="vertical-align: middle;" role="presentation">' +
 				'<a data-unicode="' + obj.unicode[0] + '" data-shortcode="' + shortcode + '" href="javascript:void(0)" role="option"', ' aria-posinset="' + ( i + 1 ) + '"', ' aria-setsize=""', ' aria-labelledby=""',
 				' class="cke_hand" tabindex="-1" onkeydown="CKEDITOR.tools.callFunction( ', onKeydown, ', event, this );">',
-				emojione.shortnameToUnicode(shortcode) +
+				//emojione.shortnameToUnicode(shortcode) +
+				emojione.toImage(shortcode) +
 				'</a>', '</td>'
 			);
 
